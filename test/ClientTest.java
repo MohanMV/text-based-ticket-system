@@ -5,6 +5,9 @@
  */
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -17,7 +20,7 @@ import static org.junit.Assert.*;
  * @author Mohan;
  */
 public class ClientTest {
-    
+    Client clientA;
     public ClientTest() {
     }
     
@@ -31,63 +34,66 @@ public class ClientTest {
     
     @Before
     public void setUp() {
+        clientA = new Client();
+        clientA.set("username","localhost", 8888);
     }
     
     @After
     public void tearDown() {
+        
     }
 
     /**
-     * Test of main method, of class Client.
+     * Check if an error is thrown when push command is carried out initially without adding any text
      */
-//    @Test
-//    public void testMain() throws Exception {
-//        System.out.println("main");
-//        String[] args = null;
-//        Client.main(args);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of set method, of class Client.
-//     */
-//    @Test
-//    public void testSet() {
-//        System.out.println("set");
-//        String user = "";
-//        String host = "";
-//        int port = 0;
-//        Client instance = new Client();
-//        instance.set(user, host, port);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-
+    @Test(expected = RuntimeException.class)
+    public void testPushThrowsExceptionIfNoLineIsAdded() throws Exception {
+        
+        String[] args = {"username", "localhost", "8888"};
+        String input = "manage foo\npush\nexit\n";
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out, true, "UTF-8"));
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF-8"));
+        System.setIn(in);
+        Client.main(args);
+    }
+    
     /**
-     * Test of run method, of class Client.
+     * Check if an error is thrown when push command is carried out without adding new lines to draft
+     */
+    @Test(expected = RuntimeException.class)
+    public void testPushThrowsExceptionIfNoSecondLineIsAdded() throws Exception {
+        
+        String[] args = {"username", "localhost", "8888"};
+        String input = "manage tag1\nline hello\npush\nmanage tag1\npush\nexit\n";
+        
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out, true, "UTF-8"));
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF-8"));
+        System.setIn(in);
+        Client.main(args);
+    }
+    
+     /**
+     * Check if line command accepts spacing from user input. 
+     * True if spacing is accepted
+     * False if spacing is ignored
      */
     @Test
-    public void testRun() throws Exception {
-        System.out.println("run");
-        Client instance = new Client();
-        instance.run();
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
+    public void testSpacingInLineCommand() throws Exception {
+        
+        String[] args = {"username", "localhost", "8888"};
+        String input = "manage tag2\nline read one line\npush\nread tag2\nexit";
+        
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out, true, "UTF-8"));
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF-8"));
+        System.setIn(in); 
+        Client.main(args);
+ 
+        String output = out.toString("UTF-8");
+        String expectedOutput = "read one line";
+        boolean actual = output.contains(expectedOutput);
+        assertTrue("Output does not contain 'read one line'",actual);
     }
-
-    /**
-     * Test of loop method, of class Client.
-     */
-//    @Test
-//    public void testLoop() throws Exception {
-//        System.out.println("loop");
-//        CLFormatter helper = null;
-//        BufferedReader reader = null;
-//        Client instance = new Client();
-//        instance.loop(helper, reader);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-    
 }

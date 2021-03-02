@@ -20,7 +20,9 @@ import static org.junit.Assert.*;
  * @author Mohan;
  */
 public class ClientTest {
+    
     Client clientA;
+    
     public ClientTest() {
     }
     
@@ -44,7 +46,7 @@ public class ClientTest {
     }
 
     /**
-     * Check if an error is thrown when push command is carried out initially without adding any text
+     * Check if runtime error is thrown when push command is carried out initially without adding any lines to draft
      */
     @Test(expected = RuntimeException.class)
     public void testPushThrowsExceptionIfNoLineIsAdded() throws Exception {
@@ -59,7 +61,7 @@ public class ClientTest {
     }
     
     /**
-     * Check if an error is thrown when push command is carried out without adding new lines to draft
+     * Check if an error is thrown when push command is used without using line command on tags that already has tines
      */
     @Test(expected = RuntimeException.class)
     public void testPushThrowsExceptionIfNoSecondLineIsAdded() throws Exception {
@@ -80,7 +82,7 @@ public class ClientTest {
      * False if spacing is ignored
      */
     @Test
-    public void testSpacingInLineCommand() throws Exception {
+    public void testSpacingWhenNewLineIsAdded() throws Exception {
         
         String[] args = {"username", "localhost", "8888"};
         String input = "manage tag2\nline read one line\npush\nread tag2\nexit";
@@ -94,6 +96,6 @@ public class ClientTest {
         String output = out.toString("UTF-8");
         String expectedOutput = "read one line";
         boolean actual = output.contains(expectedOutput);
-        assertTrue("Output does not contain 'read one line'",actual);
+        assertTrue("Output does not contain String 'read one line'",actual);
     }
 }

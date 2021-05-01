@@ -74,8 +74,7 @@ public class Client {
   private String user;
   private String host;
   private int port;
-
-  boolean printSplash = true;
+  private boolean printSplash = true;
 
   public Client(String user, String host, int port) {
     this.user = user;

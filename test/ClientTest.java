@@ -36,8 +36,7 @@ public class ClientTest {
     
     @Before
     public void setUp() {
-        clientA = new Client();
-        clientA.set("username","localhost", 8888);
+        clientA = new Client("username","localhost", 8888);
     }
     
     @After

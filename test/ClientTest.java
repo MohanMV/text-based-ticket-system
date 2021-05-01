@@ -54,8 +54,8 @@ public class ClientTest {
         String[] args = {"username", "localhost", "8888"};
         String input = "manage foo\npush\nexit\n";
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out, true, "UTF-8"));
-        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF-8"));
+        System.setOut(new PrintStream(out, true, "UTF8"));
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
         System.setIn(in);
         Client.main(args);
     }
@@ -70,14 +70,14 @@ public class ClientTest {
         String input = "manage tag1\nline hello\npush\nmanage tag1\npush\nexit\n";
         
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out, true, "UTF-8"));
-        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF-8"));
+        System.setOut(new PrintStream(out, true, "UTF8"));
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
         System.setIn(in);
         Client.main(args);
     }
     
      /**
-     * Check if line command accepts spacing from user input. 
+     * Check if program accepts spacing when a new line of text is added 
      * True if spacing is accepted
      * False if spacing is ignored
      */
@@ -88,12 +88,12 @@ public class ClientTest {
         String input = "manage tag2\nline read one line\npush\nread tag2\nexit";
         
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out, true, "UTF-8"));
-        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF-8"));
+        System.setOut(new PrintStream(out, true, "UTF8"));
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
         System.setIn(in); 
         Client.main(args);
  
-        String output = out.toString("UTF-8");
+        String output = out.toString("UTF8");
         String expectedOutput = "read one line";
         boolean actual = output.contains(expectedOutput);
         assertTrue("Output does not contain String 'read one line'",actual);

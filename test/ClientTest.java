@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -96,5 +95,28 @@ public class ClientTest {
         String expectedOutput = "read one line";
         boolean actual = output.contains(expectedOutput);
         assertTrue("Output does not contain String 'read one line'",actual);
+    }
+    
+     /**
+     * Check if program accepts spacing when a new line of text is added 
+     * True if spacing is accepted
+     * False if spacing is ignored
+     */
+    @Test
+    public void testWhiteSpaceWhenNewLineIsAdded() throws Exception {
+        
+        String[] args = {"username", "localhost", "8888"};
+        String input = "manage tag2\nline read one       line\npush\nread tag2\nexit";
+        
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out, true, "UTF8"));
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
+        System.setIn(in); 
+        Client.main(args);
+ 
+        String output = out.toString("UTF8");
+        String expectedOutput = "read one       line";
+        boolean actual = output.contains(expectedOutput);
+        assertTrue("Output does not contain String 'read one         line'",actual);
     }
 }

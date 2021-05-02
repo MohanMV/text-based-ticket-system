@@ -140,7 +140,7 @@ public class Client {
     for (boolean done = false; !done;) {
 
       // Print user options
-      if (state.equals("Main")) {
+      if ("Main".equals(state)) {
         System.out.print(helper.formatMainMenuPrompt());
       } else {  // state = "Drafting"
         System.out.print(helper.
@@ -164,7 +164,7 @@ public class Client {
         // exit command applies in either state
         done = true;
       } // "Main" state commands
-      else if (state.equals("Main")) {
+      else if ("Main".equals(state)) {
         if ("manage".startsWith(cmd)) {
           // Switch to "Drafting" state and start a new "draft"
           state = "Drafting";
@@ -179,7 +179,8 @@ public class Client {
           System.out.println("Could not parse command/args.");
         }
       } // "Drafting" state commands
-      else if (state.equals("Drafting")) {
+      else if ("Drafting".equals(state)) {
+          
         if ("line".startsWith(cmd)) {
           // Add a tine message line
           String line = Arrays.stream(rawArgs).
@@ -190,6 +191,9 @@ public class Client {
           helper.chan.send(new Push(user, draftTag, draftLines));
           state = "Main";
           draftTag = null;
+          
+          draftLines.clear();
+          
         } else {
           System.out.println("Could not parse command/args.");
         }

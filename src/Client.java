@@ -108,7 +108,7 @@ public class Client {
       }
       helper = new CLFormatter(this.host, this.port);
 
-      if (this.printSplash = true);
+      if (this.printSplash == true);
       {
         System.out.print(helper.formatSplash(this.user));
       }
@@ -197,6 +197,5 @@ public class Client {
         System.out.println("Could not parse command/args.");
       }
     }
-    return;
   }
 }

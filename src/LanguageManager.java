@@ -1,5 +1,6 @@
 
 import java.text.MessageFormat;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -24,13 +25,9 @@ public class LanguageManager {
      * Loads the locale setting based on the language chosen by the user
      * @param language
      */
-    public LanguageManager(String language){
-        
-        if(language.equals("1")){
-            strings = ResourceBundle.getBundle(RESOURCE_PATH, new Locale("en", "GB"));
-        } else if(language.equals("2")){
-            strings = ResourceBundle.getBundle(RESOURCE_PATH, new Locale("fr", "FR"));
-        }
+    public LanguageManager(){
+        strings = ResourceBundle.getBundle(RESOURCE_PATH, new Locale("en", "GB"));
+
     }
     
     /**
@@ -58,17 +55,22 @@ public class LanguageManager {
     }   
     
     public String getCouldNotParseCommandMessage(){
-        return strings.getString("could not parse command/args.");
+        return strings.getString("could_not_parse_command");
     }    
     
     public String getIOExceptionMessage(){
         return strings.getString("io_exception");
-    }   
+    }
+    
     public String getClassNotFoundExceptionMessage(){
         return strings.getString("class_not_found_exception");
     }
     
-    private  static String formatDrafting(String tag, List<String> lines) {
+    public String getFormatReadMessage(String tag, List<String> users,List<String> read){
+        return println(strings.getString("format_read"), formatRead(tag, users, read));
+    }
+    
+    private static String formatDrafting(String tag, List<String> lines) {
         StringBuilder b = new StringBuilder("#");
         b.append(tag);
         int i = 1;
@@ -80,6 +82,20 @@ public class LanguageManager {
         }
         return b.toString();
     }
+    
+    private static String formatRead(String tag, List<String> users,List<String> read) {
+        StringBuilder b = new StringBuilder("#");
+        b.append(tag);
+        Iterator<String> it = read.iterator();
+        for (String user : users) {
+            b.append("\n");
+            b.append(String.format("%12s", user));
+            b.append("  ");
+            b.append(it.next());
+        }
+        b.append("\n");
+        return b.toString();
+  }
     
     private String println(String message, Object...params){
         return (MessageFormat.format(message,params));

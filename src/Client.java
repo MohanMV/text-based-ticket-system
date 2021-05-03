@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 import sep.tinee.net.message.Bye;
 import sep.tinee.net.message.Push;
@@ -74,6 +75,7 @@ public class Client {
   private String user;
   private String host;
   private int port;
+
   private boolean printSplash = true;
 
   public Client(String user, String host, int port) {
@@ -96,15 +98,19 @@ public class Client {
       value = "DM_DEFAULT_ENCODING",
       justification = "When reading console, ignore 'default encoding' warning")
   void run() throws IOException {
-
+    
     BufferedReader reader = null;
     CLFormatter helper = null;
     LanguageManager lang = null;
+
     
     try {
-      reader = new BufferedReader(new InputStreamReader(System.in));
-      lang = new LanguageManager("1");
+        
 
+      reader = new BufferedReader(new InputStreamReader(System.in));
+      lang = new LanguageManager();
+      
+      //choice =  myIn.nextInt();
       if (this.user.isEmpty() || this.host.isEmpty()) {
         System.err.println(lang.getUserNotSetMessage());
         System.exit(1);
@@ -137,7 +143,7 @@ public class Client {
   void loop(CLFormatter helper, BufferedReader reader) throws IOException,
       ClassNotFoundException {
 
-    LanguageManager lang = new LanguageManager("1");
+    LanguageManager lang = new LanguageManager();
     // The app is in one of two states: "Main" or "Drafting"
     String state = "Main";  // Initial state
 
@@ -181,8 +187,7 @@ public class Client {
           // Read tines on server
           helper.chan.send(new ReadRequest(rawArgs[0]));
           ReadReply rep = (ReadReply) helper.chan.receive();
-          System.out.print(
-              helper.formatRead(rawArgs[0], rep.users, rep.lines));
+          System.out.print(lang.getFormatReadMessage(rawArgs[0], rep.users, rep.lines));
         } else {
           System.out.println(lang.getCouldNotParseCommandMessage());
         }

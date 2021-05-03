@@ -99,25 +99,28 @@ public class Client {
 
     BufferedReader reader = null;
     CLFormatter helper = null;
+    LanguageManager lang = null;
+    
     try {
       reader = new BufferedReader(new InputStreamReader(System.in));
+      lang = new LanguageManager("1");
 
       if (this.user.isEmpty() || this.host.isEmpty()) {
-        System.err.println("User/host has not been set.");
+        System.err.println(lang.getUserNotSetMessage());
         System.exit(1);
       }
       helper = new CLFormatter(this.host, this.port);
 
       if (this.printSplash == true)
       {
-        System.out.print(helper.formatSplash(this.user));
+        System.out.print(lang.getFormatSplash(this.user));
       }
       loop(helper, reader);
     } catch (IOException ex) {
-        System.err.println("IOException was found: " + ex.getMessage());
+        System.err.println(lang.getIOExceptionMessage() + ex.getMessage());
         ex.printStackTrace();
     } catch (ClassNotFoundException ex){
-        System.err.println("ClassNotFoundException was found: " + ex.getMessage());
+        System.err.println(lang.getClassNotFoundExceptionMessage() + ex.getMessage());
         ex.printStackTrace();
         
     } finally {
@@ -134,6 +137,7 @@ public class Client {
   void loop(CLFormatter helper, BufferedReader reader) throws IOException,
       ClassNotFoundException {
 
+    LanguageManager lang = new LanguageManager("1");
     // The app is in one of two states: "Main" or "Drafting"
     String state = "Main";  // Initial state
 
@@ -146,16 +150,15 @@ public class Client {
 
       // Print user options
       if ("Main".equals(state)) {
-        System.out.print(helper.formatMainMenuPrompt());
+        System.out.print(lang.getFormatMainMenuPrompt());
       } else {  // state = "Drafting"
-        System.out.print(helper.
-            formatDraftingMenuPrompt(draftTag, draftLines));
+        System.out.print(lang.getFormatDraftingMenuPrompt(draftTag, draftLines));
       }
 
       // Read a line of user input
       String raw = reader.readLine();
       if (raw == null) {
-        throw new IOException("Input stream closed while reading.");
+        throw new IOException(lang.getInputStreamClosedMessage());
       }
       // Trim leading/trailing white space, and split words according to spaces
       List<String> split = Arrays.stream(raw.trim().split("\\s+", 2))
@@ -181,7 +184,7 @@ public class Client {
           System.out.print(
               helper.formatRead(rawArgs[0], rep.users, rep.lines));
         } else {
-          System.out.println("Could not parse command/args.");
+          System.out.println(lang.getCouldNotParseCommandMessage());
         }
       } // "Drafting" state commands
       else if ("Drafting".equals(state)) {
@@ -200,10 +203,10 @@ public class Client {
           draftLines.clear();
           
         } else {
-          System.out.println("Could not parse command/args.");
+          System.out.println(lang.getCouldNotParseCommandMessage());
         }
       } else {
-        System.out.println("Could not parse command/args.");
+        System.out.println(lang.getCouldNotParseCommandMessage());
       }
     }
   }

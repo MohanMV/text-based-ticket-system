@@ -108,13 +108,18 @@ public class Client {
       }
       helper = new CLFormatter(this.host, this.port);
 
-      if (this.printSplash == true);
+      if (this.printSplash == true)
       {
         System.out.print(helper.formatSplash(this.user));
       }
       loop(helper, reader);
-    } catch (Exception ex) {
-      throw new RuntimeException(ex);
+    } catch (IOException ex) {
+        System.err.println("IOException was found: " + ex.getMessage());
+        ex.printStackTrace();
+    } catch (ClassNotFoundException ex){
+        System.err.println("ClassNotFoundException was found: " + ex.getMessage());
+        ex.printStackTrace();
+        
     } finally {
       reader.close();
       if (helper.chan.isOpen()) {

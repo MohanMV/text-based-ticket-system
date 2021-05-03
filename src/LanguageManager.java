@@ -27,7 +27,6 @@ public class LanguageManager {
      */
     public LanguageManager(){
         strings = ResourceBundle.getBundle(RESOURCE_PATH, new Locale("en", "GB"));
-
     }
     
     /**

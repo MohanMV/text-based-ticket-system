@@ -155,15 +155,14 @@ public class Client {
         
         String currentState = "Main";  // Initial state
         boolean done = false;//
-        
-        SwitchStates s = new SwitchStates(currentState, done);
-        PushRequest push = new PushRequest(s);  // request
-        ManageRequest manage = new ManageRequest(s);  // request
-        ExitRequest exit = new ExitRequest(s); //request
-        // Holds the current draft data when in the "Drafting" state
-
         String draftTag = null;
         List<String> draftLines = new LinkedList<>();
+       
+        SwitchStates s = new SwitchStates(currentState, done, draftTag, draftLines);
+          
+ 
+        
+        // Holds the current draft data when in the "Drafting" state
 
         // The loop
        
@@ -177,7 +176,7 @@ public class Client {
 
             } else {  // state = "Drafting"
 
-                System.out.print(lang.getFormatDraftingMenuPrompt(draftTag, draftLines));
+                System.out.print(lang.getFormatDraftingMenuPrompt(s.getDraftTag(), s.getDraftLines()));
             }
 
             // Read a line of user input
@@ -198,9 +197,12 @@ public class Client {
 
             // Process user input
             if ("exit".startsWith(cmd)) {
+                
+                ExitRequest exit = new ExitRequest(s); //request
+                
 
                 // exit command applies in either state
-                Command(exit);
+                Command(exit); //requestor
 
             } // "Main" state commands
             else if ("Main".equals(s.getState())) {
@@ -209,17 +211,23 @@ public class Client {
                 if ("manage".startsWith(cmd)) {
 
                     // Switch to "Drafting" state and start a new "draft"
-
+                    ManageRequest manage = new ManageRequest(s, rawArgs[0]);  // request
                     Command(manage);//requestor
-                    draftTag = rawArgs[0];
 
 
                 } else if ("read".startsWith(cmd)) {
 
 
                     // Read tines on server
-                    helper.chan.send(new ReadRequest(rawArgs[0]));
+                    //helper.chan.send(new ReadRequest(rawArgs[0]));
+                    
+                    ReadTagRequest read = new ReadTagRequest(s, rawArgs[0]); // request
+                    
+                    Command(read); // requestor
+                    
                     ReadReply rep = (ReadReply) helper.chan.receive();
+                    
+                    
                     System.out.print(lang.getFormatReadMessage(rawArgs[0], rep.users, rep.lines));
 
 
@@ -232,24 +240,26 @@ public class Client {
             else if ("Drafting".equals(s.getState())) {
 
                 if ("line".startsWith(cmd)) {
-
+                    
+                    
                     // Add a tine message line
-                    String line = Arrays.stream(rawArgs).collect(Collectors.joining());
-
-                    draftLines.add(line);
+                    String tagLine = Arrays.stream(rawArgs).collect(Collectors.joining());
+                    
+                    LineRequest line = new LineRequest(s, tagLine); //request
+                    
+                    
+                    Command(line); //requestor
 
 
                 } else if ("push".startsWith(cmd)) {
 
+                    PushRequest push = new PushRequest(s,user);  // request 
+                    
 
                     // Send drafted tines to the server, and go back to "Main" state
 
+                    Command(push); //requestor
 
-                    helper.chan.send(new Push(user, draftTag, draftLines));
-                    Command(push);
-                    draftTag = null;
-
-                    draftLines.clear();
 
                 } else {
 
@@ -270,8 +280,8 @@ public class Client {
 //        
 //    }
     
-    private void Command(Command cmd){ //executor 
-       
+    private void Command(Command cmd){ //executor or Invoker
+
         cmd.execute();
     }
 }

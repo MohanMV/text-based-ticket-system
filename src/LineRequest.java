@@ -8,25 +8,26 @@
  *
  * @author Mohankumaar MV student-id = 17048038;
  */
-public class ManageRequest implements Command {
+public class LineRequest implements Command{
+
+    private States s;
+    private String line;
+
     
-    private States s; // Receiver
-    private String tag;
-    
-    public ManageRequest(States s, String tag){
+    public LineRequest(States s, String line){
         this.s = s;
-        this.tag = tag;
+        this.line = line;
+     
     }
-    
     
     @Override
     public void execute() {
-       s.stateDrafting();
-       s.addDraftTag(this.tag);
+        s.addLine(this.line);
+    }
+
+    @Override
+    public void undo() {
+        
     }
     
-    @Override
-    public void undo(){
-        s.stateMain();
-    }
 }

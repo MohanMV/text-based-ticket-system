@@ -21,4 +21,9 @@ public class ExitRequest implements Command{
         s.exit();
     }
     
+    @Override
+    public void undo(){
+        
+    }
+    
 }

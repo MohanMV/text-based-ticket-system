@@ -13,33 +13,28 @@ import java.util.logging.Logger;
  *
  * @author Mohankumaar MV student-id = 17048038;
  */
-public class PushRequest implements Command {
-    
+public class ReadTagRequest implements Command {
     private States s;
-    private String user;
+    private String rawArgs;
+
     
-    public PushRequest(States s, String user){
-        this.s = s;        
-        this.user = user;
+    public ReadTagRequest(States s, String rawArgs){
+        this.s = s;
+        this.rawArgs = rawArgs;
+     
     }
-    
     
     @Override
     public void execute() {
-        
-        s.stateMain();       
         try {
-            s.pushLines(user);
+            s.readTagRequest(this.rawArgs);
         } catch (IOException ex) {
-            Logger.getLogger(PushRequest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ReadTagRequest.class.getName()).log(Level.SEVERE, null, ex);
         }
-        s.setDraftTagNull();
-        s.clearDraftLines();
     }
-    
+
     @Override
-    public void undo(){
-        s.stateDrafting();
+    public void undo() {
+        
     }
-    
 }

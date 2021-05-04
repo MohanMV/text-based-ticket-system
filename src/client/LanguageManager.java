@@ -1,3 +1,5 @@
+package client;
+
 
 import java.text.MessageFormat;
 import java.util.Iterator;

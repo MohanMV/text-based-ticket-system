@@ -1,3 +1,5 @@
+package client;
+
 
 import java.io.IOException;
 import sep.tinee.net.channel.ClientChannel;

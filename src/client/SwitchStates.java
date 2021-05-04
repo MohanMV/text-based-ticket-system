@@ -1,3 +1,5 @@
+package client;
+
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -20,16 +22,16 @@ public class SwitchStates implements States { // Receiver
     private String state;
     private boolean done;
     private String draftTag;
-    private List<String> draftLines = new LinkedList<>();
+    private List<String> draftLines;
  //   private String[] rawArgs;
     
     
-    public SwitchStates(String state, boolean done, String draftTag, List<String> draftLines){
+    public SwitchStates(){
         
-        this.state = state;
-        this.done = done;   
-        this.draftTag = draftTag;
-        this.draftLines = draftLines;
+        this.state = "Main";
+        this.done = false;   
+        this.draftTag = null;
+        this.draftLines = new LinkedList<>();
 //        this.rawArgs = rawArgs;
     }
     
@@ -40,10 +42,6 @@ public class SwitchStates implements States { // Receiver
     public boolean getDone(){
         return this.done;
     }
-    
-//    public void setArgs(String[] args){
-//        this.rawArgs = args;
-//    }
     
     public String getDraftTag(){
         return this.draftTag;

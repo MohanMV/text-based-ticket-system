@@ -1,10 +1,11 @@
+package client;
+
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import sep.tinee.net.message.Bye;
@@ -72,8 +73,8 @@ public class Client {
     private String user;
     private String host;
     private int port;
-    private LanguageManager lang = new LanguageManager();
-
+    
+    LanguageManager lang = new LanguageManager();
     private boolean printSplash = true;
 
     public Client(String user, String host, int port) {
@@ -96,19 +97,23 @@ public class Client {
       value = "DM_DEFAULT_ENCODING",
       justification = "When reading console, ignore 'default encoding' warning")
     void run() throws IOException {
+        
 
         BufferedReader reader = null;
         CLFormatter helper = null;
 
 
         try {
-
+            
+            
             reader = new BufferedReader(new InputStreamReader(System.in));
             
             //choice =  myIn.nextInt();
             if (this.user.isEmpty() || this.host.isEmpty()) {
                 System.err.println(lang.getUserNotSetMessage());
-                System.exit(1);
+                SwitchStates e = new SwitchStates();
+                ExitRequest exit = new ExitRequest(e);
+                command(exit);
             }
             
             helper = new CLFormatter(this.host, this.port);
@@ -151,12 +156,8 @@ public class Client {
 
         // The app is in one of two states: "Main" or "Drafting"
         
-        String currentState = "Main";  // Initial state
-        boolean done = false;//
-        String draftTag = null;
-        List<String> draftLines = new LinkedList<>();
-       
-        SwitchStates s = new SwitchStates(currentState, done, draftTag, draftLines);
+
+        SwitchStates s = new SwitchStates();
           
  
         
@@ -198,7 +199,7 @@ public class Client {
                 
                 ExitRequest exit = new ExitRequest(s); //request
                 // exit command applies in either state
-                Command(exit); //requestor
+                command(exit); //requestor
 
             } // "Main" state commands
             else if ("Main".equals(s.getState())) {
@@ -208,7 +209,7 @@ public class Client {
 
                     // Switch to "Drafting" state and start a new "draft"
                     ManageRequest manage = new ManageRequest(s, rawArgs[0]);  // request
-                    Command(manage);//requestor
+                    command(manage);//requestor
 
 
                 } else if ("read".startsWith(cmd)) {
@@ -219,7 +220,7 @@ public class Client {
                     
                     ReadTagRequest read = new ReadTagRequest(s, rawArgs[0]); // request
                     
-                    Command(read); // requestor
+                    command(read); // requestor
                     
                     ReadReply rep = (ReadReply) helper.chan.receive();
                     
@@ -244,7 +245,7 @@ public class Client {
                     LineRequest line = new LineRequest(s, tagLine); //request
                     
                     
-                    Command(line); //requestor
+                    command(line); //requestor
 
 
                 } else if ("push".startsWith(cmd)) {
@@ -255,7 +256,7 @@ public class Client {
 
                     // Send drafted tines to the server, and go back to "Main" state
 
-                    Command(push); //requestor
+                    command(push); //requestor
 
 
                 } else {
@@ -273,7 +274,7 @@ public class Client {
     }
     
     
-    private void Command(Command cmd){ //executor or Invoker
+    private void command(Command cmd){ //executor or Invoker
 
         cmd.execute();
     }

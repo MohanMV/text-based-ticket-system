@@ -18,7 +18,7 @@ public class ManageRequest implements Command {
     
     
     @Override
-    public String execute() {
-        return s.stateDrafting();
+    public void execute() {
+       s.stateDrafting();
     }
 }

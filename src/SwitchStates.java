@@ -10,13 +10,34 @@
  */
 public class SwitchStates implements States {
     
-    @Override
-    public String stateMain(){
-        return "Main";
+    private String state;
+    private boolean done;
+    
+    public SwitchStates(String state, boolean done){
+        this.state = state;
+        this.done = done;   
+    }
+    
+    public String getState(){
+        return this.state;
+    }
+    
+    public boolean getDone(){
+        return this.done;
     }
     
     @Override
-    public String stateDrafting(){
-        return "Drafting";
+    public void stateMain(){
+        this.state = "Main";
+    }
+    
+    @Override
+    public void stateDrafting(){
+        this.state = "Drafting";
+    }
+
+    @Override
+    public void exit() {
+        this.done = true;
     }
 }

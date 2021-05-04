@@ -8,11 +8,17 @@
  *
  * @author Mohankumaar MV student-id = 17048038;
  */
-public interface States {
+public class ExitRequest implements Command{
+
+    private States s; // Receiver
     
-    public void stateMain();
+    public ExitRequest(States s){
+        this.s = s;
+    }
     
-    public void stateDrafting();
+    @Override
+    public void execute() {    
+        s.exit();
+    }
     
-    public void exit();
 }

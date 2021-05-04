@@ -152,25 +152,26 @@ public class Client {
         LanguageManager lang = new LanguageManager();
 
         // The app is in one of two states: "Main" or "Drafting"
-        SwitchStates s = new SwitchStates();
-        
-        PushRequest push = new PushRequest(s);  // requestor
-        ManageRequest manage = new ManageRequest(s);  // requestor
         
         String currentState = "Main";  // Initial state
-
+        boolean done = false;//
+        
+        SwitchStates s = new SwitchStates(currentState, done);
+        PushRequest push = new PushRequest(s);  // request
+        ManageRequest manage = new ManageRequest(s);  // request
+        ExitRequest exit = new ExitRequest(s); //request
         // Holds the current draft data when in the "Drafting" state
 
         String draftTag = null;
         List<String> draftLines = new LinkedList<>();
 
         // The loop
-        boolean done = false;
+       
         
-        while (!done) {
+        while (!s.getDone()) {
 
             // Print user options
-            if ("Main".equals(currentState)) {
+            if ("Main".equals(s.getState())) {
 
                 System.out.print(lang.getFormatMainMenuPrompt());
 
@@ -199,17 +200,17 @@ public class Client {
             if ("exit".startsWith(cmd)) {
 
                 // exit command applies in either state
-                done = true;
+                Command(exit);
 
             } // "Main" state commands
-            else if ("Main".equals(currentState)) {
+            else if ("Main".equals(s.getState())) {
 
 
                 if ("manage".startsWith(cmd)) {
 
                     // Switch to "Drafting" state and start a new "draft"
 
-                    currentState = Command(manage);
+                    Command(manage);//requestor
                     draftTag = rawArgs[0];
 
 
@@ -228,7 +229,7 @@ public class Client {
 
                 }
             } // "Drafting" state commands
-            else if ("Drafting".equals(currentState)) {
+            else if ("Drafting".equals(s.getState())) {
 
                 if ("line".startsWith(cmd)) {
 
@@ -245,7 +246,7 @@ public class Client {
 
 
                     helper.chan.send(new Push(user, draftTag, draftLines));
-                    currentState = Command(push);
+                    Command(push);
                     draftTag = null;
 
                     draftLines.clear();
@@ -269,8 +270,8 @@ public class Client {
 //        
 //    }
     
-    private String Command(Command cmd){ //executor 
+    private void Command(Command cmd){ //executor 
        
-        return cmd.execute();
+        cmd.execute();
     }
 }

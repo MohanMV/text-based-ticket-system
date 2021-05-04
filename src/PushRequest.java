@@ -14,12 +14,13 @@ public class PushRequest implements Command {
     
     public PushRequest(States s){
         this.s = s;
+        
     }
     
     
     @Override
-    public String execute() {
-        return s.stateMain();
+    public void execute() {
+        s.stateMain();
     }
     
 }

@@ -105,7 +105,6 @@ public class Client {
     
     try {
         
-
       reader = new BufferedReader(new InputStreamReader(System.in));
       lang = new LanguageManager();
       
@@ -121,97 +120,157 @@ public class Client {
         System.out.print(lang.getFormatSplash(this.user));
       }
       loop(helper, reader);
+      
     } catch (IOException ex) {
+        
         System.err.println(lang.getIOExceptionMessage() + ex.getMessage());
         ex.printStackTrace();
+        
     } catch (ClassNotFoundException ex){
+        
         System.err.println(lang.getClassNotFoundExceptionMessage() + ex.getMessage());
         ex.printStackTrace();
         
+        
     } finally {
+        
       reader.close();
+      
       if (helper.chan.isOpen()) {
         // If the channel is open, send Bye and close
         helper.chan.send(new Bye());
+        
         helper.chan.close();
+        
       }
     }
   }
 
 // Main loop: print user options, read user input and process
-  void loop(CLFormatter helper, BufferedReader reader) throws IOException,
-      ClassNotFoundException {
+    void loop(CLFormatter helper, BufferedReader reader) throws IOException,ClassNotFoundException { // controller
 
-    LanguageManager lang = new LanguageManager();
-    // The app is in one of two states: "Main" or "Drafting"
-    String state = "Main";  // Initial state
+        LanguageManager lang = new LanguageManager();
 
-    // Holds the current draft data when in the "Drafting" state
-    String draftTag = null;
-    List<String> draftLines = new LinkedList<>();
+        // The app is in one of two states: "Main" or "Drafting"
+        SwitchStates s = new SwitchStates();
+        
+        PushRequest push = new PushRequest(s);  // requestor
+        ManageRequest manage = new ManageRequest(s);  // requestor
+        
+        String currentState = "Main";  // Initial state
 
-    // The loop
-    for (boolean done = false; !done;) {
+        // Holds the current draft data when in the "Drafting" state
 
-      // Print user options
-      if ("Main".equals(state)) {
-        System.out.print(lang.getFormatMainMenuPrompt());
-      } else {  // state = "Drafting"
-        System.out.print(lang.getFormatDraftingMenuPrompt(draftTag, draftLines));
-      }
+        String draftTag = null;
+        List<String> draftLines = new LinkedList<>();
 
-      // Read a line of user input
-      String raw = reader.readLine();
-      if (raw == null) {
-        throw new IOException(lang.getInputStreamClosedMessage());
-      }
-      // Trim leading/trailing white space, and split words according to spaces
-      List<String> split = Arrays.stream(raw.trim().split("\\s+", 2))
-          .map(x -> x.trim()).collect(Collectors.toList());
-      String cmd = split.remove(0);  // First word is the command keyword
-      String[] rawArgs = split.toArray(new String[split.size()]);
-      // Remainder, if any, are arguments
+        // The loop
+        boolean done = false;
+        
+        while (!done) {
 
-      // Process user input
-      if ("exit".startsWith(cmd)) {
-        // exit command applies in either state
-        done = true;
-      } // "Main" state commands
-      else if ("Main".equals(state)) {
-        if ("manage".startsWith(cmd)) {
-          // Switch to "Drafting" state and start a new "draft"
-          state = "Drafting";
-          draftTag = rawArgs[0];
-        } else if ("read".startsWith(cmd)) {
-          // Read tines on server
-          helper.chan.send(new ReadRequest(rawArgs[0]));
-          ReadReply rep = (ReadReply) helper.chan.receive();
-          System.out.print(lang.getFormatReadMessage(rawArgs[0], rep.users, rep.lines));
-        } else {
-          System.out.println(lang.getCouldNotParseCommandMessage());
+            // Print user options
+            if ("Main".equals(currentState)) {
+
+                System.out.print(lang.getFormatMainMenuPrompt());
+
+            } else {  // state = "Drafting"
+
+                System.out.print(lang.getFormatDraftingMenuPrompt(draftTag, draftLines));
+            }
+
+            // Read a line of user input
+            String raw = reader.readLine();
+
+            if (raw == null) {
+
+                throw new IOException(lang.getInputStreamClosedMessage());
+
+            }
+            // Trim leading/trailing white space, and split words according to spaces
+            List<String> split = Arrays.stream(raw.trim().split("\\s+", 2)).map(x -> x.trim()).collect(Collectors.toList());
+
+            String cmd = split.remove(0);  // First word is the command keyword
+
+            String[] rawArgs = split.toArray(new String[split.size()]);
+            // Remainder, if any, are arguments
+
+            // Process user input
+            if ("exit".startsWith(cmd)) {
+
+                // exit command applies in either state
+                done = true;
+
+            } // "Main" state commands
+            else if ("Main".equals(currentState)) {
+
+
+                if ("manage".startsWith(cmd)) {
+
+                    // Switch to "Drafting" state and start a new "draft"
+
+                    currentState = Command(manage);
+                    draftTag = rawArgs[0];
+
+
+                } else if ("read".startsWith(cmd)) {
+
+
+                    // Read tines on server
+                    helper.chan.send(new ReadRequest(rawArgs[0]));
+                    ReadReply rep = (ReadReply) helper.chan.receive();
+                    System.out.print(lang.getFormatReadMessage(rawArgs[0], rep.users, rep.lines));
+
+
+                } else {
+
+                    System.out.println(lang.getCouldNotParseCommandMessage());
+
+                }
+            } // "Drafting" state commands
+            else if ("Drafting".equals(currentState)) {
+
+                if ("line".startsWith(cmd)) {
+
+                    // Add a tine message line
+                    String line = Arrays.stream(rawArgs).collect(Collectors.joining());
+
+                    draftLines.add(line);
+
+
+                } else if ("push".startsWith(cmd)) {
+
+
+                    // Send drafted tines to the server, and go back to "Main" state
+
+
+                    helper.chan.send(new Push(user, draftTag, draftLines));
+                    currentState = Command(push);
+                    draftTag = null;
+
+                    draftLines.clear();
+
+                } else {
+
+                    System.out.println(lang.getCouldNotParseCommandMessage());
+
+                }
+            } else {
+
+                System.out.println(lang.getCouldNotParseCommandMessage());
+
+
+            }
         }
-      } // "Drafting" state commands
-      else if ("Drafting".equals(state)) {
-          
-        if ("line".startsWith(cmd)) {
-          // Add a tine message line
-          String line = Arrays.stream(rawArgs).
-              collect(Collectors.joining());
-          draftLines.add(line);
-        } else if ("push".startsWith(cmd)) {
-          // Send drafted tines to the server, and go back to "Main" state
-          helper.chan.send(new Push(user, draftTag, draftLines));
-          state = "Main";
-          draftTag = null;
-          
-          draftLines.clear();
-          
-        } else {
-          System.out.println(lang.getCouldNotParseCommandMessage());
-        }
-      } else {
-        System.out.println(lang.getCouldNotParseCommandMessage());
-      }
     }
-  }
+    
+//    private String Manage(SwitchStates s){
+//        return s;
+//        
+//    }
+    
+    private String Command(Command cmd){ //executor 
+       
+        return cmd.execute();
+    }
 }

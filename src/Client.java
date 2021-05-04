@@ -8,9 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import sep.tinee.net.message.Bye;
-import sep.tinee.net.message.Push;
 import sep.tinee.net.message.ReadReply;
-import sep.tinee.net.message.ReadRequest;
 
 /**
  * This class is an initial work-in-progress prototype for a command line
@@ -71,85 +69,85 @@ import sep.tinee.net.message.ReadRequest;
  */
 public class Client {
 
-  private String user;
-  private String host;
-  private int port;
+    private String user;
+    private String host;
+    private int port;
+    private LanguageManager lang = new LanguageManager();
 
-  private boolean printSplash = true;
+    private boolean printSplash = true;
 
-  public Client(String user, String host, int port) {
-    this.user = user;
-    this.host = host;
-    this.port = port;
-  }
+    public Client(String user, String host, int port) {
+        this.user = user;
+        this.host = host;
+        this.port = port;
+    }
 
-  public static void main(String[] args) throws IOException {
-    String user = args[0];
-    String host = args[1];
-    int port = Integer.parseInt(args[2]);
-    Client client = new Client(user, host, port);
-    client.run();
-  }
+    public static void main(String[] args) throws IOException {
+        String user = args[0];
+        String host = args[1];
+        int port = Integer.parseInt(args[2]);
+        Client client = new Client(user, host, port);
+        client.run();
+    }
 
 
-  // Run the client
-  @SuppressFBWarnings(
+    // Run the client
+    @SuppressFBWarnings(
       value = "DM_DEFAULT_ENCODING",
       justification = "When reading console, ignore 'default encoding' warning")
-  void run() throws IOException {
-    
-    BufferedReader reader = null;
-    CLFormatter helper = null;
-    LanguageManager lang = null;
+    void run() throws IOException {
 
-    
-    try {
-        
-      reader = new BufferedReader(new InputStreamReader(System.in));
-      lang = new LanguageManager();
-      
-      //choice =  myIn.nextInt();
-      if (this.user.isEmpty() || this.host.isEmpty()) {
-        System.err.println(lang.getUserNotSetMessage());
-        System.exit(1);
-      }
-      helper = new CLFormatter(this.host, this.port);
+        BufferedReader reader = null;
+        CLFormatter helper = null;
 
-      if (this.printSplash == true)
-      {
-        System.out.print(lang.getFormatSplash(this.user));
-      }
-      loop(helper, reader);
-      
-    } catch (IOException ex) {
-        
-        System.err.println(lang.getIOExceptionMessage() + ex.getMessage());
-        ex.printStackTrace();
-        
-    } catch (ClassNotFoundException ex){
-        
-        System.err.println(lang.getClassNotFoundExceptionMessage() + ex.getMessage());
-        ex.printStackTrace();
-        
-        
-    } finally {
-        
-      reader.close();
-      
-      if (helper.chan.isOpen()) {
-        // If the channel is open, send Bye and close
-        helper.chan.send(new Bye());
-        
-        helper.chan.close();
-        
-      }
-    }
+
+        try {
+
+            reader = new BufferedReader(new InputStreamReader(System.in));
+            
+            //choice =  myIn.nextInt();
+            if (this.user.isEmpty() || this.host.isEmpty()) {
+                System.err.println(lang.getUserNotSetMessage());
+                System.exit(1);
+            }
+            
+            helper = new CLFormatter(this.host, this.port);
+
+            if (this.printSplash == true)
+            {
+                System.out.print(lang.getFormatSplash(this.user));
+            }
+            loop(helper, reader);
+
+          } catch (IOException ex) {
+
+                System.err.println(lang.getIOExceptionMessage() + ex.getMessage());
+                ex.printStackTrace();
+
+          } catch (ClassNotFoundException ex){
+
+                System.err.println(lang.getClassNotFoundExceptionMessage() + ex.getMessage());
+                ex.printStackTrace();
+
+
+          } finally {
+
+            reader.close();
+
+            if (helper.chan.isOpen()) {
+                // If the channel is open, send Bye and close
+                helper.chan.send(new Bye());
+
+                helper.chan.close();
+
+            }
+        }
   }
 
 // Main loop: print user options, read user input and process
     void loop(CLFormatter helper, BufferedReader reader) throws IOException,ClassNotFoundException { // controller
 
-        LanguageManager lang = new LanguageManager();
+        
 
         // The app is in one of two states: "Main" or "Drafting"
         
@@ -199,8 +197,6 @@ public class Client {
             if ("exit".startsWith(cmd)) {
                 
                 ExitRequest exit = new ExitRequest(s); //request
-                
-
                 // exit command applies in either state
                 Command(exit); //requestor
 
@@ -253,6 +249,7 @@ public class Client {
 
                 } else if ("push".startsWith(cmd)) {
 
+                    
                     PushRequest push = new PushRequest(s,user);  // request 
                     
 
@@ -275,10 +272,6 @@ public class Client {
         }
     }
     
-//    private String Manage(SwitchStates s){
-//        return s;
-//        
-//    }
     
     private void Command(Command cmd){ //executor or Invoker
 

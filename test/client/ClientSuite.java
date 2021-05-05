@@ -17,7 +17,7 @@ import org.junit.runners.Suite;
  * @author Mohankumaar MV student-id = 17048038;
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({client.LineRequestTest.class, client.ExitRequestTest.class, client.StatesTest.class, client.ClientTest.class, client.PushRequestTest.class, client.ManageRequestTest.class, client.CLFormatterTest.class, client.ReadTagRequestTest.class, client.CommandTest.class, client.LanguageManagerTest.class, client.SwitchStatesTest.class})
+@Suite.SuiteClasses({client.LanguageManagerTest.class,})
 public class ClientSuite {
 
     @BeforeClass

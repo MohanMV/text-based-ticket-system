@@ -103,12 +103,12 @@ public class Client {
 
         BufferedReader reader = null;
         CLFormatter helper = null;
-
+        reader = new BufferedReader(new InputStreamReader(System.in));
 
         try {
             
             
-            reader = new BufferedReader(new InputStreamReader(System.in));
+           
             
             //choice =  myIn.nextInt();
             if (this.user.isEmpty() || this.host.isEmpty()) {
@@ -262,7 +262,14 @@ public class Client {
                     command(push); //requestor
 
 
-                } else {
+                } else if("undo".startsWith(cmd)){
+                    
+                    String tagLine = Arrays.stream(rawArgs).collect(Collectors.joining());
+                    LineRequest line = new LineRequest(s, tagLine);
+                    undo(line);
+                }
+                
+                else {
 
                     System.out.println(lang.getCouldNotParseCommandMessage());
 
@@ -280,5 +287,9 @@ public class Client {
     private void command(Command cmd){ //executor or Invoker
 
         cmd.execute();
+    }
+    
+    private void undo(Command cmd){ //Invoker
+        cmd.undo(); 
     }
 }

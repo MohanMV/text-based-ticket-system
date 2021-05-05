@@ -103,12 +103,12 @@ public class Client {
 
 <span class="fc" id="L104">        BufferedReader reader = null;</span>
 <span class="fc" id="L105">        CLFormatter helper = null;</span>
-
+<span class="fc" id="L106">        reader = new BufferedReader(new InputStreamReader(System.in));</span>
 
         try {
             
             
-<span class="fc" id="L111">            reader = new BufferedReader(new InputStreamReader(System.in));</span>
+           
             
             //choice =  myIn.nextInt();
 <span class="pc bpc" id="L114" title="1 of 4 branches missed.">            if (this.user.isEmpty() || this.host.isEmpty()) {</span>
@@ -281,5 +281,9 @@ public class Client {
 
 <span class="fc" id="L282">        cmd.execute();</span>
 <span class="fc" id="L283">    }</span>
+    
+    private void undo(Command cmd){ //Invoker
+<span class="nc" id="L286">        cmd.undo(); </span>
+<span class="nc" id="L287">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

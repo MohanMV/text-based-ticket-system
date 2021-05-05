@@ -188,5 +188,5 @@ public class ClientTest {
 //        boolean actual = output.contains(expectedOutput);
 //        assertTrue("Output does not contain String '[Principal] Entrez la commande:'",actual);
 //    }
-//    
+    
 }

@@ -31,6 +31,8 @@ public interface States {
        
     public void stateDrafting();
     
+    public void removeLine(String line);
+    
     public void exit();
 
 }

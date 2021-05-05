@@ -29,7 +29,7 @@ public class LineRequest implements Command{
 
     @Override
     public void undo() {
-        
+        s.removeLine(this.line);
     }
     
 }

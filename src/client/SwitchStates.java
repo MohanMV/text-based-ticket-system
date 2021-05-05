@@ -95,4 +95,10 @@ public class SwitchStates implements States { // Receiver
     public void addDraftTag(String rawArgs) {
         this.draftTag = rawArgs;
     }
+    
+    @Override
+    public void removeLine(String line){
+        
+        this.draftLines.remove(line);
+    }
 }

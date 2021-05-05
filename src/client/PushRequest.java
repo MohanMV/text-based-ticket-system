@@ -11,7 +11,7 @@ import java.util.logging.Logger;
  * and open the template in the editor.
  */
 
-/**
+/**Push Command
  *
  * @author Mohankumaar MV student-id = 17048038;
  */
@@ -20,12 +20,20 @@ public class PushRequest implements Command {
     private States s;
     private String user;
     
+    /**
+     * Constructor for PushRequest
+     * @param s receiver
+     * @param user user name
+     */
     public PushRequest(States s, String user){
         this.s = s;        
         this.user = user;
     }
     
-    
+    /**
+     * Push lines to server
+     * clear buffer variable
+     */
     @Override
     public void execute() {
         
@@ -39,6 +47,9 @@ public class PushRequest implements Command {
         s.clearDraftLines();
     }
     
+    /**
+     *
+     */
     @Override
     public void undo(){
         s.stateDrafting();

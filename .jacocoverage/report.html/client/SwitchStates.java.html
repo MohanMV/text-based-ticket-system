@@ -95,5 +95,11 @@ public class SwitchStates implements States { // Receiver
     public void addDraftTag(String rawArgs) {
 <span class="fc" id="L96">        this.draftTag = rawArgs;</span>
 <span class="fc" id="L97">    }</span>
+    
+    @Override
+    public void removeLine(String line){
+        
+<span class="nc" id="L102">        this.draftLines.remove(line);</span>
+<span class="nc" id="L103">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

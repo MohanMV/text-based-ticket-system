@@ -11,7 +11,7 @@ import java.util.logging.Logger;
  * and open the template in the editor.
  */
 
-/**
+/**Read Command
  *
  * @author Mohankumaar MV student-id = 17048038;
  */
@@ -19,13 +19,20 @@ public class ReadTagRequest implements Command {
     private States s;
     private String rawArgs;
 
-    
+    /**Constructor for ReadTagRequest
+     *
+     * @param s receiver
+     * @param rawArgs tag to be read
+     */
     public ReadTagRequest(States s, String rawArgs){
         this.s = s;
         this.rawArgs = rawArgs;
      
     }
     
+    /**
+     * read tag
+     */
     @Override
     public void execute() {
         try {
@@ -35,6 +42,9 @@ public class ReadTagRequest implements Command {
         }
     }
 
+    /**
+     *
+     */
     @Override
     public void undo() {
         

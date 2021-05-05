@@ -13,6 +13,11 @@ public class CLFormatter {
 
     static ClientChannel chan;  // Client-side channel for talking to a Tinee server
 
+    /**
+     *  Initialises client channel
+     * @param host localhost
+     * @param port port number
+     */
     public CLFormatter(String host, int port) {
         this.chan = new ClientChannel(host, port);   
     }

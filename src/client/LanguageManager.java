@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
  * and open the template in the editor.
  */
 
-/**
+/** Handles all the textual elements
  *
  * @author Mohankumaar MV student-id = 17048038;
  */
@@ -36,45 +36,87 @@ public class LanguageManager {
     }
     
     /**
-     * Retrieve  
-     * @return 
+     * Retrieve  splash message
+     * @param user name of user
+     * @return splash message
      */
     public String getFormatSplash(String user){
         return println(strings.getString("format_splash"),user);
     }
     
+    /**
+     * Retrieve Main Menu Prompt
+     * @return main menu
+     */
     public String getFormatMainMenuPrompt(){
         return strings.getString("format_main_menu_prompt");
     }
     
+    /**
+     * Retrieve Drafting Menu Prompt
+     * @param tag tag
+     * @param lines lines in tag
+     * @return Drafting Menu Prompt
+     */
     public String getFormatDraftingMenuPrompt(String tag, List<String> lines){
         return println(strings.getString("format_drafting_menu_prompt"),formatDrafting(tag, lines));
     }
     
+    /**
+     *Retrieve UserNotSetMessage
+     * @return UserNotSetMessage
+     */
     public String getUserNotSetMessage(){
         return strings.getString("user_not_set");
     }
     
+    /**
+     *Retrieve InputStreamClosedMessage
+     * @return InputStreamClosedMessage
+     */
     public String getInputStreamClosedMessage(){
         return strings.getString("input_stream_closed");
     }   
     
+    /**
+     *Retrieve CouldNotParseCommandMessage
+     * @return CouldNotParseCommandMessage
+     */
     public String getCouldNotParseCommandMessage(){
         return strings.getString("could_not_parse_command");
     }    
     
+    /**
+     *Retrieve IOExceptionMessage
+     * @return IOExceptionMessage
+     */
     public String getIOExceptionMessage(){
         return strings.getString("io_exception");
     }
     
+    /**
+     *Retrieve ClassNotFoundExceptionMessage
+     * @return ClassNotFoundExceptionMessage
+     */
     public String getClassNotFoundExceptionMessage(){
         return strings.getString("class_not_found_exception");
     }
     
+    /**
+     *Retrieve ReadMessage
+     * @param tag tag id
+     * @param users user that drafted lines
+     * @param read list of lines
+     * @return ReadMessage
+     */
     public String getFormatReadMessage(String tag, List<String> users,List<String> read){
         return println(strings.getString("format_read"), formatRead(tag, users, read));
     }
     
+    /**
+     *Retrieve ExitMessage
+     * @return ExitMessage
+     */
     public String getExitMessage(){
         return strings.getString("exit_message");
     }

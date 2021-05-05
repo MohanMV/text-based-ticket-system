@@ -123,6 +123,24 @@ public class ClientTest {
         assertTrue("Output does not contain String 'read one         line'",actual);
     }
     
+//    @Test
+//    public void testUndo() throws Exception {
+//        
+//        String[] args = {"username", "localhost", "8888"};
+//        String input = "manage test\nline test1\nundo test1\nread test\nexit";
+//        
+//        ByteArrayOutputStream out = new ByteArrayOutputStream();
+//        System.setOut(new PrintStream(out, true, "UTF8"));
+//        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
+//        System.setIn(in); 
+//        Client.main(args);
+// 
+//        String output = out.toString("UTF8");
+//        String expectedOutput = "test2";
+//        boolean actual = output.contains(expectedOutput);
+//        assertTrue("Output does not contain String 'test2'",actual);
+//    }
+    
      /**
      * Check if User or host is empty
      * True if spacing is accepted

@@ -262,28 +262,35 @@ public class Client {
 <span class="fc" id="L262">                    command(push); //requestor</span>
 
 
-<span class="fc" id="L265">                } else {</span>
+<span class="pc bnc" id="L265" title="All 2 branches missed.">                } else if(&quot;undo&quot;.startsWith(cmd)){</span>
+                    
+<span class="nc" id="L267">                    String tagLine = Arrays.stream(rawArgs).collect(Collectors.joining());</span>
+<span class="nc" id="L268">                    LineRequest line = new LineRequest(s, tagLine);</span>
+<span class="nc" id="L269">                    undo(line);</span>
+<span class="nc" id="L270">                }</span>
+                
+                else {
 
-<span class="nc" id="L267">                    System.out.println(lang.getCouldNotParseCommandMessage());</span>
+<span class="nc" id="L274">                    System.out.println(lang.getCouldNotParseCommandMessage());</span>
 
                 }
             } else {
 
-<span class="nc" id="L272">                System.out.println(lang.getCouldNotParseCommandMessage());</span>
+<span class="nc" id="L279">                System.out.println(lang.getCouldNotParseCommandMessage());</span>
 
 
             }
-<span class="fc" id="L276">        }</span>
-<span class="fc" id="L277">    }</span>
+<span class="fc" id="L283">        }</span>
+<span class="fc" id="L284">    }</span>
     
     
     private void command(Command cmd){ //executor or Invoker
 
-<span class="fc" id="L282">        cmd.execute();</span>
-<span class="fc" id="L283">    }</span>
+<span class="fc" id="L289">        cmd.execute();</span>
+<span class="fc" id="L290">    }</span>
     
     private void undo(Command cmd){ //Invoker
-<span class="nc" id="L286">        cmd.undo(); </span>
-<span class="nc" id="L287">    }</span>
+<span class="nc" id="L293">        cmd.undo(); </span>
+<span class="nc" id="L294">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

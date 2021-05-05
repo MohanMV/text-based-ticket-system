@@ -6,13 +6,19 @@ package client;
  * and open the template in the editor.
  */
 
-/**
+/**Command Interface
  *
  * @author Mohankumaar MV student-id = 17048038;
  */
 public interface Command {
     
+    /**
+     * execute command
+     */
     public void execute();
     
+    /**
+     * undo command
+     */
     public void undo();
 }

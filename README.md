@@ -1,4 +1,4 @@
-Tinee is a text based ticketing system which is integrated to a server. 
+Tinee is a text based ticket system which is integrated to a server. 
  
 
 To run server, enter line below in a command prompt(replace 8888 with your port number):

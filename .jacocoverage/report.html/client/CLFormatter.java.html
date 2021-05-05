@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>CLFormatter.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;tinee&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">client</a> &gt; <span class="el_source">CLFormatter.java</span></div><h1>CLFormatter.java</h1><pre class="source lang-java linenums">package client;
+
+
+import java.io.IOException;
+import sep.tinee.net.channel.ClientChannel;
+import sep.tinee.net.message.Message;
+
+/**
+ * A helper class for the current prototype {@link Client client}.  &lt;i&gt;E.g.&lt;/i&gt;,
+ * for formatting Command Line messages.
+ */
+public class CLFormatter {
+
+    static ClientChannel chan;  // Client-side channel for talking to a Tinee server
+
+<span class="fc" id="L16">    public CLFormatter(String host, int port) {</span>
+<span class="fc" id="L17">        this.chan = new ClientChannel(host, port);   </span>
+<span class="fc" id="L18">    }</span>
+
+    /* Interact with Tinee server */
+
+    private void send(Message msg) throws IOException {
+<span class="nc" id="L23">        this.chan.send(msg);</span>
+<span class="nc" id="L24">    }</span>
+
+    private Message receive() throws IOException, ClassNotFoundException {
+<span class="nc" id="L27">        return this.chan.receive();</span>
+    }
+
+  //  /* Following are the auxiliary methods for formatting the UI text */
+  //
+  //  static String formatSplash(String user) {
+  //    return &quot;\nHello &quot; + user + &quot;!\n&quot;
+  //        + &quot;Note:  Commands can be abbreviated to any prefix, &quot;
+  //        + &quot;e.g., read [mytag] =&gt; re [mytag]\n&quot;;
+  //  }
+  //
+  //  static String formatMainMenuPrompt() {
+  //    return &quot;\n[Main] Enter command: &quot;
+  //        + &quot;read [mytag], &quot;
+  //        + &quot;manage [mytag], &quot;
+  //        + &quot;exit&quot;
+  //        + &quot;\n&gt; &quot;;
+  //  }
+  //
+  //  static String formatDraftingMenuPrompt(String tag, List&lt;String&gt; lines) {
+  //    return &quot;\nDrafting: &quot; + formatDrafting(tag, lines)
+  //        + &quot;\n[Drafting] Enter command: &quot;
+  //        + &quot;line [mytext], &quot;
+  //        + &quot;push, &quot;
+  //        + &quot;exit&quot;
+  //        + &quot;\n&gt; &quot;;
+  //  }
+  //
+  //  static String formatDrafting(String tag, List&lt;String&gt; lines) {
+  //    StringBuilder b = new StringBuilder(&quot;#&quot;);
+  //    b.append(tag);
+  //    int i = 1;
+  //    for (String x : lines) {
+  //      b.append(&quot;\n&quot;);
+  //      b.append(String.format(&quot;%12d&quot;, i++));
+  //      b.append(&quot;  &quot;);
+  //      b.append(x);
+  //    };
+  //    return b.toString();
+  //  }
+  //
+  //  static String formatRead(String tag, List&lt;String&gt; users,
+  //      List&lt;String&gt; read) {
+  //    StringBuilder b = new StringBuilder(&quot;Read: #&quot;);
+  //    b.append(tag);
+  //    Iterator&lt;String&gt; it = read.iterator();
+  //    for (String user : users) {
+  //      b.append(&quot;\n&quot;);
+  //      b.append(String.format(&quot;%12s&quot;, user));
+  //      b.append(&quot;  &quot;);
+  //      b.append(it.next());
+  //    };
+  //    b.append(&quot;\n&quot;);
+  //    return b.toString();
+  //  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>SwitchStates.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;tinee&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">client</a> &gt; <span class="el_source">SwitchStates.java</span></div><h1>SwitchStates.java</h1><pre class="source lang-java linenums">package client;
+
+
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
+import sep.tinee.net.message.Push;
+import sep.tinee.net.message.ReadRequest;
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ *
+ * @author Mohankumaar MV student-id = 17048038;
+ */
+public class SwitchStates implements States { // Receiver
+    
+    private String state;
+    private boolean done;
+    private String draftTag;
+    private List&lt;String&gt; draftLines;
+ //   private String[] rawArgs;
+    
+    
+<span class="fc" id="L29">    public SwitchStates(){</span>
+        
+<span class="fc" id="L31">        this.state = &quot;Main&quot;;</span>
+<span class="fc" id="L32">        this.done = false;   </span>
+<span class="fc" id="L33">        this.draftTag = null;</span>
+<span class="fc" id="L34">        this.draftLines = new LinkedList&lt;&gt;();</span>
+//        this.rawArgs = rawArgs;
+<span class="fc" id="L36">    }</span>
+    
+    public String getState(){
+<span class="fc" id="L39">        return this.state;</span>
+    }
+    
+    public boolean getDone(){
+<span class="fc" id="L43">        return this.done;</span>
+    }
+    
+    public String getDraftTag(){
+<span class="fc" id="L47">        return this.draftTag;</span>
+    }
+    
+    public List&lt;String&gt; getDraftLines(){
+<span class="fc" id="L51">        return this.draftLines;</span>
+    }
+    
+    @Override
+    public void stateMain(){
+<span class="fc" id="L56">        this.state = &quot;Main&quot;;</span>
+<span class="fc" id="L57">    }</span>
+    
+    @Override
+    public void stateDrafting(){
+<span class="fc" id="L61">        this.state = &quot;Drafting&quot;;</span>
+<span class="fc" id="L62">    }</span>
+    
+    @Override
+    public void setDraftTagNull(){
+<span class="fc" id="L66">        this.draftTag = null;</span>
+<span class="fc" id="L67">    }</span>
+    
+    @Override
+    public void clearDraftLines(){
+<span class="fc" id="L71">        this.draftLines.clear();</span>
+<span class="fc" id="L72">    }</span>
+
+    @Override
+    public void exit() {
+<span class="fc" id="L76">        this.done = true;</span>
+<span class="fc" id="L77">    }</span>
+
+    @Override
+    public void addLine(String line) {
+<span class="fc" id="L81">        this.draftLines.add(line);</span>
+<span class="fc" id="L82">    }</span>
+
+    @Override
+    public void readTagRequest(String rawArgs) throws IOException {
+<span class="fc" id="L86">        CLFormatter.chan.send(new ReadRequest(rawArgs));</span>
+<span class="fc" id="L87">    }</span>
+    
+    @Override
+    public void pushLines(String user) throws IOException{
+<span class="fc" id="L91">        CLFormatter.chan.send(new Push(user, draftTag, draftLines));</span>
+<span class="fc" id="L92">    }</span>
+
+    @Override
+    public void addDraftTag(String rawArgs) {
+<span class="fc" id="L96">        this.draftTag = rawArgs;</span>
+<span class="fc" id="L97">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

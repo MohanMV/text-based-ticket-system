@@ -112,8 +112,8 @@ public final class Push implements Message {
 <span class="pc bpc" id="L112" title="1 of 2 branches missed.">    if (tags.isEmpty()) {</span>
 <span class="nc" id="L113">      throw new IllegalArgumentException(&quot;Tags set should be non-empty.&quot;);</span>
     }
-<span class="pc bpc" id="L115" title="1 of 2 branches missed.">    if (lines.isEmpty()) {</span>
-<span class="nc" id="L116">      throw new IllegalArgumentException(&quot;Tines list should be non-empty.&quot;);</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">    if (lines.isEmpty()) {</span>
+<span class="fc" id="L116">      throw new IllegalArgumentException(&quot;Tines list should be non-empty.&quot;);</span>
     }
 <span class="fc" id="L118">    Message.isValidUserId(user);</span>
 <span class="fc" id="L119">    tags.forEach(Message::isValidTag);</span>

@@ -45,7 +45,7 @@ public class LanguageManagerTest {
     public void testGetFormatSplash() {
         System.out.println("getFormatSplash");
         String user = "";
-        LanguageManager instance = new LanguageManager();
+        LanguageManager instance = null;
         String expResult = "";
         String result = instance.getFormatSplash(user);
         assertEquals(expResult, result);
@@ -59,7 +59,7 @@ public class LanguageManagerTest {
     @Test
     public void testGetFormatMainMenuPrompt() {
         System.out.println("getFormatMainMenuPrompt");
-        LanguageManager instance = new LanguageManager();
+        LanguageManager instance = null;
         String expResult = "";
         String result = instance.getFormatMainMenuPrompt();
         assertEquals(expResult, result);
@@ -75,7 +75,7 @@ public class LanguageManagerTest {
         System.out.println("getFormatDraftingMenuPrompt");
         String tag = "";
         List<String> lines = null;
-        LanguageManager instance = new LanguageManager();
+        LanguageManager instance = null;
         String expResult = "";
         String result = instance.getFormatDraftingMenuPrompt(tag, lines);
         assertEquals(expResult, result);
@@ -89,7 +89,7 @@ public class LanguageManagerTest {
     @Test
     public void testGetUserNotSetMessage() {
         System.out.println("getUserNotSetMessage");
-        LanguageManager instance = new LanguageManager();
+        LanguageManager instance = null;
         String expResult = "";
         String result = instance.getUserNotSetMessage();
         assertEquals(expResult, result);
@@ -103,7 +103,7 @@ public class LanguageManagerTest {
     @Test
     public void testGetInputStreamClosedMessage() {
         System.out.println("getInputStreamClosedMessage");
-        LanguageManager instance = new LanguageManager();
+        LanguageManager instance = null;
         String expResult = "";
         String result = instance.getInputStreamClosedMessage();
         assertEquals(expResult, result);
@@ -117,7 +117,7 @@ public class LanguageManagerTest {
     @Test
     public void testGetCouldNotParseCommandMessage() {
         System.out.println("getCouldNotParseCommandMessage");
-        LanguageManager instance = new LanguageManager();
+        LanguageManager instance = null;
         String expResult = "";
         String result = instance.getCouldNotParseCommandMessage();
         assertEquals(expResult, result);
@@ -131,7 +131,7 @@ public class LanguageManagerTest {
     @Test
     public void testGetIOExceptionMessage() {
         System.out.println("getIOExceptionMessage");
-        LanguageManager instance = new LanguageManager();
+        LanguageManager instance = null;
         String expResult = "";
         String result = instance.getIOExceptionMessage();
         assertEquals(expResult, result);
@@ -145,7 +145,7 @@ public class LanguageManagerTest {
     @Test
     public void testGetClassNotFoundExceptionMessage() {
         System.out.println("getClassNotFoundExceptionMessage");
-        LanguageManager instance = new LanguageManager();
+        LanguageManager instance = null;
         String expResult = "";
         String result = instance.getClassNotFoundExceptionMessage();
         assertEquals(expResult, result);
@@ -162,9 +162,23 @@ public class LanguageManagerTest {
         String tag = "";
         List<String> users = null;
         List<String> read = null;
-        LanguageManager instance = new LanguageManager();
+        LanguageManager instance = null;
         String expResult = "";
         String result = instance.getFormatReadMessage(tag, users, read);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of getExitMessage method, of class LanguageManager.
+     */
+    @Test
+    public void testGetExitMessage() {
+        System.out.println("getExitMessage");
+        LanguageManager instance = null;
+        String expResult = "";
+        String result = instance.getExitMessage();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");

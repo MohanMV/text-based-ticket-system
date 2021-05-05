@@ -124,10 +124,10 @@ public class ClientChannel implements AutoCloseable {
   public Message receive() throws IOException, ClassNotFoundException {
     Object obj;
     try {
-<span class="nc bnc" id="L127" title="All 2 branches missed.">      if (!isOpen()) {</span>
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">      if (!isOpen()) {</span>
 <span class="nc" id="L128">        open();</span>
       }
-<span class="nc" id="L130">      obj = this.in.readObject();</span>
+<span class="fc" id="L130">      obj = this.in.readObject();</span>
 <span class="nc" id="L131">    } catch (IOException ex) {</span>
       try {
 <span class="nc" id="L133">        close();</span>
@@ -136,12 +136,12 @@ public class ClientChannel implements AutoCloseable {
             &quot;Connection close error: &quot;, ex1);
 <span class="nc" id="L137">      }</span>
 <span class="nc" id="L138">      throw ex;</span>
-<span class="nc" id="L139">    }</span>
-<span class="nc bnc" id="L140" title="All 2 branches missed.">    if (!(obj instanceof Message)) {</span>
+<span class="fc" id="L139">    }</span>
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">    if (!(obj instanceof Message)) {</span>
 <span class="nc" id="L141">      throw new IOException(&quot;[Server error]  Received unexpected object type: &quot;</span>
 <span class="nc" id="L142">          + obj.getClass());</span>
     }
-<span class="nc" id="L144">    return (Message) obj;</span>
+<span class="fc" id="L144">    return (Message) obj;</span>
   }
 
   /**

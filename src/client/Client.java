@@ -74,7 +74,9 @@ public class Client {
     private String host;
     private int port;
     
-    LanguageManager lang = new LanguageManager();
+    
+    public static final String LANGUAGE = "en";
+    private LanguageManager lang = new LanguageManager(LANGUAGE);
     private boolean printSplash = true;
 
     public Client(String user, String host, int port) {
@@ -110,10 +112,13 @@ public class Client {
             
             //choice =  myIn.nextInt();
             if (this.user.isEmpty() || this.host.isEmpty()) {
-                System.err.println(lang.getUserNotSetMessage());
-                SwitchStates e = new SwitchStates();
-                ExitRequest exit = new ExitRequest(e);
-                command(exit);
+                
+ //               System.out.println(lang.getExitMessage());
+                throw new IOException(lang.getUserNotSetMessage());
+//                SwitchStates e = new SwitchStates();
+//                ExitRequest exit = new ExitRequest(e);
+//                
+//                command(exit);
             }
             
             helper = new CLFormatter(this.host, this.port);
@@ -122,22 +127,20 @@ public class Client {
             {
                 System.out.print(lang.getFormatSplash(this.user));
             }
+            
             loop(helper, reader);
 
-          } catch (IOException ex) {
+            } catch (IOException ex) {
 
                 System.err.println(lang.getIOExceptionMessage() + ex.getMessage());
-                ex.printStackTrace();
 
-          } catch (ClassNotFoundException ex){
+            } catch (ClassNotFoundException ex){
 
                 System.err.println(lang.getClassNotFoundExceptionMessage() + ex.getMessage());
-                ex.printStackTrace();
-
-
-          } finally {
-
-            reader.close();
+                
+            } finally {
+                  reader.close();
+            
 
             if (helper.chan.isOpen()) {
                 // If the channel is open, send Bye and close
@@ -157,7 +160,7 @@ public class Client {
         // The app is in one of two states: "Main" or "Drafting"
         
 
-        SwitchStates s = new SwitchStates();
+        SwitchStates s = new SwitchStates(); // initialized in the receiv
           
  
         
@@ -193,7 +196,7 @@ public class Client {
 
             String[] rawArgs = split.toArray(new String[split.size()]);
             // Remainder, if any, are arguments
-
+  
             // Process user input
             if ("exit".startsWith(cmd)) {
                 

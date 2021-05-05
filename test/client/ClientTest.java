@@ -8,6 +8,7 @@ package client;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -108,7 +109,7 @@ public class ClientTest {
     public void testWhiteSpaceWhenNewLineIsAdded() throws Exception {
         
         String[] args = {"username", "localhost", "8888"};
-        String input = "manage tag2\nline read one       line\npush\nread tag2\nexit";
+        String input = "manage tag3\nline read one       line\npush\nread tag3\nexit";
         
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         System.setOut(new PrintStream(out, true, "UTF8"));
@@ -121,4 +122,71 @@ public class ClientTest {
         boolean actual = output.contains(expectedOutput);
         assertTrue("Output does not contain String 'read one         line'",actual);
     }
+    
+     /**
+     * Check if User or host is empty
+     * True if spacing is accepted
+     * False if spacing is ignored
+     * @throws java.lang.Exception
+     */
+    @Test
+    public void testUserHostEmptyEnglish() throws Exception {
+        
+        String[] args = {"", "", "8888"};    
+        String input = "exit\n" ;
+        
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setErr(new PrintStream(out, true, "UTF8"));
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
+        System.setIn(in); 
+        Client.main(args);      
+        
+        String output = out.toString("UTF8");
+        String expectedOutput = "User/host has not been set";
+        boolean actual = output.contains(expectedOutput);
+        assertTrue("'User/host has not been set' not found in output",actual);
+    }
+    
+    @Test
+    public void testEmptyRawEnglish() throws Exception {
+        
+        String[] args = {"username", "localhost", "8888"};         
+        String input = "";
+        
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setErr(new PrintStream(out, true, "UTF8"));
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
+        System.setIn(in); 
+        Client.main(args);   
+         
+        String output = out.toString("UTF8");
+        String expectedOutput = "Input stream closed while reading.";
+        boolean actual = output.contains(expectedOutput);
+        assertTrue("'Input stream closed while reading.' not found in output",actual);
+        
+    }
+    
+    /**
+     * Check if program accepts spacing when a new line of text is added 
+     * True if spacing is accepted
+     * False if spacing is ignored
+     */
+//    @Test
+//    public void testLanguageManagerFrench() throws Exception {
+//        
+//        String[] args = {"username", "localhost", "8888"};
+//        String input = "manage tag2\nline read one line\npush\nread tag2\nexit";
+//        
+//        ByteArrayOutputStream out = new ByteArrayOutputStream();
+//        System.setOut(new PrintStream(out, true, "UTF8"));
+//        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes("UTF8"));
+//        System.setIn(in); 
+//        Client.main(args);
+// 
+//        String output = out.toString("UTF8");
+//        String expectedOutput = "[Principal] Entrez la commande:";
+//        boolean actual = output.contains(expectedOutput);
+//        assertTrue("Output does not contain String '[Principal] Entrez la commande:'",actual);
+//    }
+//    
 }

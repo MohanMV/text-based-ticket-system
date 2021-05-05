@@ -27,8 +27,12 @@ public class LanguageManager {
      * Loads the locale setting based on the language chosen by the user
      * @param language
      */
-    public LanguageManager(){
-        strings = ResourceBundle.getBundle(RESOURCE_PATH, new Locale("en", "GB"));
+    public LanguageManager(String language){
+        if ("en".equals(language)){
+            strings = ResourceBundle.getBundle(RESOURCE_PATH, new Locale("en", "GB"));
+        } else if("fr".equals(language)) {
+            strings = ResourceBundle.getBundle(RESOURCE_PATH, new Locale("fr", "FR"));    
+        }    
     }
     
     /**
@@ -69,6 +73,10 @@ public class LanguageManager {
     
     public String getFormatReadMessage(String tag, List<String> users,List<String> read){
         return println(strings.getString("format_read"), formatRead(tag, users, read));
+    }
+    
+    public String getExitMessage(){
+        return strings.getString("exit_message");
     }
     
     private static String formatDrafting(String tag, List<String> lines) {

@@ -124,19 +124,12 @@ public class Client {
         reader = new BufferedReader(new InputStreamReader(System.in));
 
         try {
-            
-            
            
-            
             //choice =  myIn.nextInt();
             if (this.user.isEmpty() || this.host.isEmpty()) {
                 
- //               System.out.println(lang.getExitMessage());
                 throw new IOException(lang.getUserNotSetMessage());
-//                SwitchStates e = new SwitchStates();
-//                ExitRequest exit = new ExitRequest(e);
-//                
-//                command(exit);
+
             }
             
             helper = new CLFormatter(this.host, this.port);
@@ -173,25 +166,13 @@ public class Client {
 // Main loop: print user options, read user input and process
     void loop(CLFormatter helper, BufferedReader reader) throws IOException,ClassNotFoundException { // controller
 
-        
-
-        // The app is in one of two states: "Main" or "Drafting"
-        
-
         SwitchStates s = new SwitchStates(); // initialized in the receiv
-          
- 
-        
-        // Holds the current draft data when in the "Drafting" state
 
         // The loop
-       
-        
         while (!s.getDone()) {
 
             // Print user options
             if ("Main".equals(s.getState())) {
-
                 System.out.print(lang.getFormatMainMenuPrompt());
 
             } else {  // state = "Drafting"
@@ -235,20 +216,12 @@ public class Client {
 
                 } else if ("read".startsWith(cmd)) {
 
-
-                    // Read tines on server
-                    //helper.chan.send(new ReadRequest(rawArgs[0]));
                     
-                    ReadTagRequest read = new ReadTagRequest(s, rawArgs[0]); // request
-                    
-                    command(read); // requestor
-                    
-                    ReadReply rep = (ReadReply) helper.chan.receive();
-                    
-                    
+                    ReadTagRequest read = new ReadTagRequest(s, rawArgs[0]); // request                   
+                    command(read); // requestor                   
+                    ReadReply rep = (ReadReply) helper.chan.receive();                                        
                     System.out.print(lang.getFormatReadMessage(rawArgs[0], rep.users, rep.lines));
-
-
+                    
                 } else {
 
                     System.out.println(lang.getCouldNotParseCommandMessage());
@@ -258,50 +231,34 @@ public class Client {
             else if ("Drafting".equals(s.getState())) {
 
                 if ("line".startsWith(cmd)) {
-                    
-                    
+                                       
                     // Add a tine message line
                     String tagLine = Arrays.stream(rawArgs).collect(Collectors.joining());
                     
-                    LineRequest line = new LineRequest(s, tagLine); //request
-                    
-                    
+                    LineRequest line = new LineRequest(s, tagLine); //request                                      
                     command(line); //requestor
 
-
                 } else if ("push".startsWith(cmd)) {
-
-                    
+             
                     PushRequest push = new PushRequest(s,user);  // request 
-                    
-
                     // Send drafted tines to the server, and go back to "Main" state
-
                     command(push); //requestor
-
-
+                    
                 } else if("undo".startsWith(cmd)){
                     
                     String tagLine = Arrays.stream(rawArgs).collect(Collectors.joining());
                     LineRequest line = new LineRequest(s, tagLine);
                     undo(line);
-                }
-                
+                }                
                 else {
-
                     System.out.println(lang.getCouldNotParseCommandMessage());
-
                 }
             } else {
-
                 System.out.println(lang.getCouldNotParseCommandMessage());
-
-
             }
         }
     }
-    
-    
+       
     private void command(Command cmd){ //executor or Invoker
 
         cmd.execute();
